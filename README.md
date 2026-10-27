@@ -158,6 +158,26 @@ sudo bash deploy/oracle/setup.sh
 
 脚本会自动安装 Node.js 22 与 Caddy、生成随机密钥、构建并启动服务，并使用 `<公网IP>.nip.io` 自动申请 HTTPS 证书。完整步骤、端口放行与常见问题见 [deploy/oracle/README.md](./deploy/oracle/README.md)。
 
+## 部署到 Hugging Face Spaces（云端，本机关机也能访问）
+
+免费 Docker Space，构建完成后应用运行在 Hugging Face 服务器上，地址为 `https://<用户名>-<空间名>.hf.space`，不依赖本地电脑。
+
+1. 注册并登录 Hugging Face（邮箱即可）；
+2. 新建 Space：SDK 选择 **Docker**，模板选择 **Blank**，例如命名 `cs-learnmate`；
+3. 在本机推送源码（首次会提示输入 HF 用户名与 Access Token，Token 需 Write 权限）：
+
+```bash
+bash deploy/huggingface/deploy.sh <用户名>/cs-learnmate
+```
+
+4. 等待 Space 自动构建（约 3-8 分钟），完成后访问 `https://<用户名>-cs-learnmate.hf.space`。
+
+在 Space 的 **Settings → Variables and secrets** 中可配置 `AUTH_SECRET`、`MODEL_SECRET`、`DEEPSEEK_API_KEY` 等，避免重建后登录态失效或进入演示模式。
+
+> 免费 Space 的磁盘为临时存储：重启、休眠唤醒或重新构建后，账号与知识库会重置。需要长期保存时可在 Space 设置中开启 **Persistent Storage**（数据目录已固定为 `/data`，无需改代码），或把 `lib/server/accounts.ts`、`lib/server/store.ts` 替换为数据库 / 对象存储。免费 Space 空闲一段时间后会休眠，首次访问需要等待冷启动。
+
+项目根目录提供通用 [Dockerfile](./Dockerfile)，也可部署到任何支持容器与持久卷的平台。
+
 ## 部署到 Vercel（临时演示）
 
 1. 推送仓库到 GitHub / Gitee；

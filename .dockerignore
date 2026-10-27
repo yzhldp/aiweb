@@ -1,0 +1,17 @@
+.git
+.gitignore
+node_modules
+.next
+.data
+.tools
+.shots
+.tmp
+out
+build
+.env
+.env.*
+!.env.example
+*.log
+req.docx
+.req
+README.md
