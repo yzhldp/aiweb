@@ -1,0 +1,7 @@
+__DOMAIN__ {
+	encode zstd gzip
+	reverse_proxy 127.0.0.1:3000 {
+		# SSE 流式回答需要关闭代理缓冲
+		flush_interval -1
+	}
+}

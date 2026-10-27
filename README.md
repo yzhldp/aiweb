@@ -145,14 +145,27 @@ npm run build      # 生产构建
 npm run start      # 运行生产构建
 ```
 
-## 部署到 Vercel
+## 部署到 Oracle Cloud（免费推荐）
+
+使用 Oracle Cloud Always Free 的 ARM 实例（2 OCPU / 12GB）常驻运行，账号、知识库与个人模型配置持久保存在服务器磁盘，适合一个月的比赛演示。
+
+```bash
+# 在 Ubuntu 22.04 / 24.04 ARM64 实例上
+git clone https://gitee.com/yang-zuhuan/ai-web-website.git
+cd ai-web-website
+sudo bash deploy/oracle/setup.sh
+```
+
+脚本会自动安装 Node.js 22 与 Caddy、生成随机密钥、构建并启动服务，并使用 `<公网IP>.nip.io` 自动申请 HTTPS 证书。完整步骤、端口放行与常见问题见 [deploy/oracle/README.md](./deploy/oracle/README.md)。
+
+## 部署到 Vercel（临时演示）
 
 1. 推送仓库到 GitHub / Gitee；
 2. 在 Vercel 导入项目，Framework 选择 Next.js；
 3. 在 Environment Variables 中配置 `AUTH_SECRET`、`MODEL_SECRET`，以及可选的 `DEEPSEEK_API_KEY`；
 4. 部署完成后即可访问。
 
-> 账号（`.data/accounts.json`）、知识库（`.data/store.json`）与会话 / 模型加密密钥默认持久化在本地 `.data/`。Vercel 等 Serverless 环境使用实例临时目录与内存回退，实例回收后可能重置；多实例间也不共享数据。生产部署建议使用长驻 Node 环境，或把 `lib/server/accounts.ts`、`lib/server/store.ts` 替换为数据库 / 对象存储与 KMS 托管密钥。
+> 账号（`.data/accounts.json`）、知识库（`.data/store.json`）与会话 / 模型加密密钥默认持久化在本地 `.data/`。Vercel 等 Serverless 环境使用实例临时目录与内存回退，实例回收后可能重置；多实例间也不共享数据。需要持久化时请使用上面的 Oracle 长驻方案，或把 `lib/server/accounts.ts`、`lib/server/store.ts` 替换为数据库 / 对象存储与 KMS 托管密钥。
 
 ## 仓库与团队信息
 

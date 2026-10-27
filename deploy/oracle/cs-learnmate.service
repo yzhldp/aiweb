@@ -1,0 +1,24 @@
+[Unit]
+Description=CS-LearnMate Next.js application
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=learnmate
+Group=learnmate
+WorkingDirectory=__APP_DIR__
+EnvironmentFile=/etc/cs-learnmate.env
+ExecStart=/usr/bin/node __APP_DIR__/node_modules/next/dist/bin/next start -H 127.0.0.1 -p 3000
+Restart=always
+RestartSec=5
+TimeoutStopSec=20
+KillSignal=SIGINT
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=full
+ProtectHome=true
+ReadWritePaths=__DATA_DIR__
+
+[Install]
+WantedBy=multi-user.target
